@@ -1,14 +1,17 @@
-RV PHORN PUBG — Website Update
+RV PHORN PUBG — Website starter with ABA KHQR checkout popup
 
-Files:
-- index.html: responsive Khmer website with UC package cards and WhatsApp manual order form.
+FILES
+- index.html: responsive Khmer landing page, UC package list, order form, and checkout modal that displays the included KHQR image after the customer submits an order.
+- khqr.png: the KHQR image supplied for payment.
 
-Before publishing:
-1. Open index.html and confirm all prices. The larger QR prices included are historical values from an earlier draft and are marked for verification. Replace them with your current selling prices.
-2. Add your official KHQR image to this same repository root as `khqr.png`.
-3. If you want the KHQR to show directly, replace the QR placeholder in index.html with:
-   <img class="qr" src="khqr.png" alt="RV PHORN PUBG KHQR">
-4. Do not publish an ABA account number or QR until you have checked that it is correct.
-5. Upload/replace index.html in the root of your GitHub repository, commit changes, then wait for GitHub Pages to redeploy.
+PUBLISH
+Upload all files to the root of the GitHub Pages repository. Keep index.html and khqr.png together.
 
-WhatsApp order messages are opened for the user to review and send manually. This is not an automated payment or UC delivery system.
+ORDER FLOW
+1. Customer selects a UC package and enters PUBG Player ID.
+2. Submitting the form opens the ABA KHQR payment popup.
+3. Customer can continue to WhatsApp to send order details to the seller.
+4. Seller must manually verify payment and top up UC. This static website does not verify bank transfers automatically.
+
+IMPORTANT
+Confirm the current UC prices before publishing. The included KHQR is the one supplied by the site owner; verify the recipient name before accepting payments. Never ask customers for passwords or OTPs.

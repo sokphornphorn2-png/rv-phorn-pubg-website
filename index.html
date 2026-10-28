@@ -53,7 +53,7 @@
     .form .btn{width:100%;margin-top:16px}
     .paybox{border:1px dashed #755293;background:#130f1e;border-radius:18px;padding:18px;text-align:center}
     .qr{width:min(250px,100%);aspect-ratio:1;object-fit:contain;background:#fff;border-radius:12px;padding:8px;margin:10px auto;display:block}
-    .qr-placeholder{display:grid;place-items:center;min-height:180px;border:1px dashed #624777;border-radius:12px;color:var(--muted);padding:20px;margin:12px 0}
+    .qr-placeholder{display:grid;place-items:center;border:1px solid #624777;border-radius:12px;background:#fff;padding:12px;margin:12px 0}.qr-placeholder img{display:block;width:100%;max-width:420px;height:auto;margin:auto;border-radius:8px}
     .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
     .step-number{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--pink),var(--purple));display:grid;place-items:center;font-weight:900}
     .step h3{margin:12px 0 5px}
@@ -61,6 +61,14 @@
     footer{border-top:1px solid var(--line);margin-top:30px;padding:28px 0 90px;color:var(--muted)}
     .footer-row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
     .wa-float{position:fixed;right:18px;bottom:18px;z-index:20;border-radius:999px;padding:13px 18px;background:#1eaf69;color:#fff;text-decoration:none;font-weight:900;box-shadow:0 10px 30px #0008}
+    .checkout-modal{position:fixed;inset:0;z-index:100;background:#05040beF;display:none;align-items:center;justify-content:center;padding:18px;overflow:auto}
+    .checkout-modal.open{display:flex}
+    .checkout-panel{width:min(520px,100%);max-height:92vh;overflow:auto;background:linear-gradient(145deg,#211634,#100d1a);border:1px solid #76509b;border-radius:22px;padding:22px;box-shadow:0 20px 70px #000b}
+    .checkout-panel h2{margin:0 0 8px;font-size:25px}
+    .order-summary{background:#0d0a15;border:1px solid var(--line);border-radius:13px;padding:12px;margin:14px 0;overflow-wrap:anywhere}
+    .checkout-actions{display:grid;gap:10px;margin-top:14px}
+    .checkout-actions .btn{width:100%}
+    .modal-close{float:right;border:1px solid var(--line);background:#261b35;color:white;border-radius:10px;padding:7px 12px;font-size:18px}
     @media(max-width:760px){nav{display:none}.hero{padding-top:38px}.hero-grid,.order-grid{grid-template-columns:1fr}.packages{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:1fr}.hero-card{padding:20px}}
     @media(max-width:480px){.packages{grid-template-columns:1fr}.card{padding:19px}.logo{width:48px;height:48px}.brand{font-size:15px}}
   </style>
@@ -133,8 +141,9 @@
         </form>
         <div class="card" id="payment">
           <h3>ការទូទាត់ KHQR / ABA</h3>
-          <p class="muted">សូមទាក់ទង Admin ដើម្បីទទួល QR ឬព័ត៌មានគណនី ABA ផ្លូវការមុនបង់ប្រាក់។</p>
-          <div class="qr-placeholder"><div><strong>កន្លែងដាក់រូប KHQR</strong><br>បន្ថែមរូប QR ផ្លូវការរបស់អ្នកជា <code>khqr.png</code> ក្នុង Repository រួចដោះស្រាយកន្លែងនេះតាម README។</div></div>
+          <p class="muted">ស្កេន KHQR ខាងក្រោមដើម្បីទូទាត់។ សូមពិនិត្យឈ្មោះអ្នកទទួលឱ្យត្រូវ មុនបញ្ជាក់ការទូទាត់។</p>
+          <div class="qr-placeholder"><img src="khqr.png" alt="KHQR payment QR for RV PHORN PUBG" loading="lazy"></div>
+          <p class="muted"><strong>ឈ្មោះអ្នកទទួល៖ KONG KIMSRORN</strong><br>សូមបង់តែចំនួនដែល Admin បានបញ្ជាក់តាម WhatsApp ប៉ុណ្ណោះ។</p>
           <p class="muted">កុំបង់ប្រាក់រហូតដល់បានផ្ទៀងផ្ទាត់កញ្ចប់ UC តម្លៃ និងឈ្មោះអ្នកទទួល។ កុំផ្ញើ OTP ឬពាក្យសម្ងាត់ទៅនរណាម្នាក់។</p>
           <a class="btn secondary" href="https://wa.me/855964364257" target="_blank" rel="noopener">ស្នើសុំ QR តាម WhatsApp</a>
         </div>
@@ -153,6 +162,22 @@
     </div>
   </section>
 </main>
+<div class="checkout-modal" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+  <div class="checkout-panel">
+    <button class="modal-close" type="button" onclick="closeCheckout()" aria-label="បិទ">✕</button>
+    <span class="tag">RV PHORN PUBG · CHECKOUT</span>
+    <h2 id="checkoutTitle">បង់ប្រាក់តាម ABA KHQR</h2>
+    <p class="muted">ការបញ្ជាទិញរបស់អ្នកត្រូវបានរៀបចំហើយ។ ស្កេន QR ខាងក្រោមដោយកម្មវិធីធនាគារ ABA ឬកម្មវិធីដែលគាំទ្រ KHQR។</p>
+    <div class="order-summary" id="checkoutSummary">ព័ត៌មានបញ្ជាទិញនឹងបង្ហាញនៅទីនេះ</div>
+    <div class="qr-placeholder"><img src="khqr.png" alt="ABA KHQR payment code" loading="eager"></div>
+    <p><strong>ឈ្មោះអ្នកទទួល៖ KONG KIMSRORN</strong></p>
+    <p class="muted">សូមពិនិត្យឈ្មោះអ្នកទទួល និងចំនួនប្រាក់ឱ្យត្រូវ មុនបញ្ជាក់។ បើតម្លៃមិនទាន់បានបញ្ជាក់ សូមទាក់ទង Admin មុនបង់។ ក្រោយបង់ប្រាក់ សូមផ្ញើបង្កាន់ដៃទៅ Admin ដើម្បីពិនិត្យដោយដៃ។</p>
+    <div class="checkout-actions">
+      <button class="btn" type="button" onclick="sendOrderToWhatsApp()">បន្តទៅ WhatsApp ដើម្បីផ្ញើការបញ្ជាទិញ ↗</button>
+      <button class="btn secondary" type="button" onclick="closeCheckout()">បិទ</button>
+    </div>
+  </div>
+</div>
 <footer id="contact">
   <div class="wrap footer-row">
     <div><strong style="color:white">RV PHORN PUBG</strong><br><span>PUBG Mobile Global · UC Top Up Cambodia</span></div>
@@ -169,6 +194,7 @@
     pkgSelect.value = options.includes(clean) ? clean : (options.includes(pkg) ? pkg : 'កញ្ចប់ផ្សេងទៀត');
     document.getElementById('order').scrollIntoView({behavior:'smooth'});
   }
+  let currentOrderMessage = '';
   document.getElementById('orderForm').addEventListener('submit', function(e){
     e.preventDefault();
     const pkg = document.getElementById('pkg').value;
@@ -176,9 +202,18 @@
     const name = document.getElementById('name').value.trim() || 'មិនបានបញ្ជាក់';
     const method = document.getElementById('method').value;
     const note = document.getElementById('note').value.trim() || 'គ្មាន';
-    const message = `សួស្តី RV PHORN PUBG! ខ្ញុំចង់បញ្ជាទិញ UC។%0A%0Aកញ្ចប់ UC: ${encodeURIComponent(pkg)}%0APlayer ID: ${encodeURIComponent(player)}%0Aឈ្មោះ: ${encodeURIComponent(name)}%0Aវិធីទូទាត់: ${encodeURIComponent(method)}%0Aចំណាំ: ${encodeURIComponent(note)}%0A%0Aសូមបញ្ជាក់តម្លៃ និងព័ត៌មានបង់ប្រាក់មុន។`;
-    window.open('https://wa.me/855964364257?text='+message, '_blank', 'noopener');
+    currentOrderMessage = `សួស្តី RV PHORN PUBG! ខ្ញុំចង់បញ្ជាទិញ UC។\n\nកញ្ចប់ UC: ${pkg}\nPlayer ID: ${player}\nឈ្មោះ: ${name}\nវិធីទូទាត់: ${method}\nចំណាំ: ${note}\n\nខ្ញុំនឹងផ្ញើបង្កាន់ដៃបង់ប្រាក់ បន្ទាប់ពីទូទាត់។ សូមពិនិត្យការទូទាត់ និងបញ្ចូល UC។`;
+    document.getElementById('checkoutSummary').innerHTML = `<strong>កញ្ចប់ UC:</strong> ${escapeHTML(pkg)}<br><strong>Player ID:</strong> ${escapeHTML(player)}<br><strong>ឈ្មោះ:</strong> ${escapeHTML(name)}<br><strong>វិធីទូទាត់:</strong> ${escapeHTML(method)}`;
+    document.getElementById('checkoutModal').classList.add('open');
   });
+  function escapeHTML(value){return String(value).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function closeCheckout(){document.getElementById('checkoutModal').classList.remove('open');}
+  function sendOrderToWhatsApp(){
+    const url = 'https://wa.me/855964364257?text=' + encodeURIComponent(currentOrderMessage);
+    window.open(url, '_blank', 'noopener');
+  }
+  document.getElementById('checkoutModal').addEventListener('click',function(e){if(e.target===this)closeCheckout();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeCheckout();});
   document.getElementById('year').textContent = new Date().getFullYear();
 </script>
 </body>
