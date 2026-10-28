@@ -1,27 +1,14 @@
-RV PHORN PUBG — Website starter (free/manual orders)
+RV PHORN PUBG — Website Update
 
-FILES
-- index.html: responsive Khmer landing page and manual order form.
+Files:
+- index.html: responsive Khmer website with UC package cards and WhatsApp manual order form.
 
-HOW TO PREVIEW
-- Open index.html in a browser. The order form builds a message locally; it does not charge customers or send orders automatically.
+Before publishing:
+1. Open index.html and confirm all prices. The larger QR prices included are historical values from an earlier draft and are marked for verification. Replace them with your current selling prices.
+2. Add your official KHQR image to this same repository root as `khqr.png`.
+3. If you want the KHQR to show directly, replace the QR placeholder in index.html with:
+   <img class="qr" src="khqr.png" alt="RV PHORN PUBG KHQR">
+4. Do not publish an ABA account number or QR until you have checked that it is correct.
+5. Upload/replace index.html in the root of your GitHub repository, commit changes, then wait for GitHub Pages to redeploy.
 
-BEFORE PUBLISHING
-1. Open index.html in a text editor.
-2. Near the bottom, find:
-   const SHOP = {
-     whatsapp: "",
-     facebook: ""
-   };
-3. Add your WhatsApp number in international format with digits only (e.g. Cambodia country code 855, no + sign) and your public Facebook Page URL.
-4. Update package names/prices only after confirming actual supplier pricing and availability.
-5. Do not add private bank credentials, passwords, or OTPs.
-6. Test with a fake order before sharing publicly.
-
-FREE HOSTING
-- GitHub Pages can host a static site free on a public repository. Create a GitHub account, create a public repository, upload index.html, then Settings > Pages > deploy from the main branch/root. GitHub's UI may change.
-- Alternatively use any free static hosting provider available to you. Free subdomains/usage limits and account requirements may change.
-- A custom domain, automated UC fulfillment, a payment gateway, order database, and supplier API are not included.
-
-IMPORTANT
-This is a demonstration/manual order website, not an authorized UC reseller connection. Confirm supplier authorization and the game/version supported before accepting payment. Only confirm an order after verifying payment in your bank app.
+WhatsApp order messages are opened for the user to review and send manually. This is not an automated payment or UC delivery system.
